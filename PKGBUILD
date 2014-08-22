@@ -1,0 +1,16 @@
+pkgname=speedtest-cli
+pkgver=0.3.1
+pkgrel=1
+pkgdesc='Command line interface for testing internet bandwidth using speedtest.net'
+arch=('x86_64')
+url='https://github.com/sivel/speedtest-cli'
+license=('Apache')
+depends=('python3')
+source=("https://github.com/sivel/speedtest-cli/archive/v${pkgver}.tar.gz")
+md5sums=('83fa094689abdf69560990cfaa678625')
+
+package(){
+    cd "$srcdir/$pkgname-$pkgver"
+
+    install -Dm755 speedtest_cli.py "$pkgdir"/usr/bin/speedtest-cli
+}
