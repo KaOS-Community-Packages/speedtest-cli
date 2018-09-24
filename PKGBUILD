@@ -1,17 +1,23 @@
 pkgname=speedtest-cli
-pkgver=0.3.4
+pkgver=2.0.2
 pkgrel=1
 pkgdesc='Command line interface for testing internet bandwidth using speedtest.net'
 arch=('x86_64')
 url='https://github.com/sivel/speedtest-cli'
 license=('Apache')
-depends=('python3')
+depends=('python3-setuptools')
 source=("https://github.com/sivel/speedtest-cli/archive/v${pkgver}.tar.gz")
-sha512sums=('fb22ba9e17a30c172b8f751020d7117caf8b573dee112506917f24c5173e2901e0f0198b4946798daf3a27839519025f4a7f8f8942034bc19356b32d6a0f6851')
+sha512sums=('12fa9a5dd8bcb7a7ee68ecc9075dc5c18f089cecf003e7e643dbb6b1c3663f17c2aba48d1e84aa27bff6b66e207d39ecaf874aebad1d71cac772c58b62191723')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  python setup.py build
+}
 
 package(){
-    cd "$srcdir/$pkgname-$pkgver"
-
-    install -D -m755 speedtest_cli.py "${pkgdir}/usr/bin/speedtest-cli"
-    install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  cd ${pkgname}-${pkgver}
+  python setup.py install -O1 --root="${pkgdir}" --prefix=/usr --skip-build
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 README.rst -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm 644 ${pkgname}.1 -t "${pkgdir}/usr/share/man/man1"
 }
